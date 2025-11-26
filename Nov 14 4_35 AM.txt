@@ -1,0 +1,191 @@
+Book.java
+
+package Test;
+
+//import java.util.*;
+
+public class Book implements Comparable<Book> {
+    private int bookId;
+    private String title;
+    private String author;
+    private int availableCopies;
+
+    // Constructor
+    public Book(int bookId, String title, String author, int availableCopies) {
+        this.bookId = bookId;
+        this.title = title;
+        this.author = author;
+        this.availableCopies = availableCopies;
+    }
+
+    // Getters and setters
+    public int getBookId() {
+        return bookId;
+    }
+
+    public void setBookId(int bookId) {
+        this.bookId = bookId;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public int getAvailableCopies() {
+        return availableCopies;
+    }
+
+    public void setAvailableCopies(int availableCopies) {
+        this.availableCopies = availableCopies;
+    }
+
+    ///////IMPORTANT//////////		From implements Comparable
+    @Override
+    public int compareTo(Book other) {
+        return this.title.compareTo(other.getTitle());
+    }
+    //used in Collections.sort() to sort by title in LibraryManagementApp.java
+    
+    
+    @Override
+    public String toString() {
+        return "Book ID: " + bookId + ", Title: " + title + ", Author: " + author + ", Available Copies: " + availableCopies;
+    }
+
+//	@Override
+//	public int compare(Book o1, Book o2) {
+//		return o1.getTitle().compareTo(o2.getTitle());
+//	}
+    ////  from implements Comparator  ////
+    
+}
+
+________________________________________________________________________________________________________________________________________________
+
+
+LibraryManagement.java
+
+package Test;
+
+import java.util.*;
+
+public class LibraryManagement {
+    private HashMap<Integer, Book> bookMap;  // BookID -> Book
+
+    // Constructor
+    public LibraryManagement() {
+        bookMap = new HashMap<>();
+    }
+
+    // Add a book to the library
+    public void addBook(Book book) {
+        bookMap.put(book.getBookId(), book);
+    }
+
+    // Remove a book by its ID
+    public void removeBook(int bookId) {
+        if (bookMap.containsKey(bookId)) {
+            bookMap.remove(bookId);
+            System.out.println("Book with ID " + bookId + " removed.");
+        } else {
+            System.out.println("Book with ID " + bookId + " not found.");
+        }
+    }
+
+    // Display available copies of a book
+    public void displayAvailableCopies(int bookId) {
+        Book book = bookMap.get(bookId);
+        if (book != null) {
+            System.out.println("Available copies of \"" + book.getTitle() + "\": " + book.getAvailableCopies());
+        } else {
+            System.out.println("Book not found.");
+        }
+    }
+
+    // Display all books sorted by title
+    public void displayBooksSorted() {
+        List<Book> books = new ArrayList<>(bookMap.values());
+        Collections.sort(books); // This will use the compareTo method of the Book class
+        System.out.println("\nBooks in order of title:");
+        for (Book book : books) {
+            System.out.println(book);
+        }
+    }
+}
+
+______________________________________________________________________________________________________________________________________________
+
+LibraryManagementApp.java
+
+package Test;
+
+//import java.util.*;
+
+public class LibraryManagementApp {
+    public static void main(String[] args) {
+        // Create an instance of LibraryManagement
+        LibraryManagement library = new LibraryManagement();
+        
+        // Add sample books
+        Book book1 = new Book(1, "Java Programming", "John Doe", 5);
+        Book book2 = new Book(2, "Data Structures", "Jane Smith", 3);
+        Book book3 = new Book(3, "Algorithms", "Bob Johnson", 2);
+
+        library.addBook(book1);
+        library.addBook(book2);
+        library.addBook(book3);
+
+        // Display all books sorted by title
+        library.displayBooksSorted();
+
+        // Display available copies of a specific book by ID
+        library.displayAvailableCopies(2);  // Display available copies for "Data Structures"
+
+        // Remove a book by ID
+        library.removeBook(2);  // Remove the book with ID 2
+
+        // Try to display the removed book's copies
+        library.displayAvailableCopies(2);
+        
+        // Display all books again after removal
+        library.displayBooksSorted();
+    }
+}
+____________________________________________________________________________________________________________________________________________________
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

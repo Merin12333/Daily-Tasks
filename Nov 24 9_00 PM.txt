@@ -1,0 +1,160 @@
+Attendee.java
+
+package Test;
+
+public class Attendee {
+    private int id;
+    private String name;
+
+    // Constructor
+    public Attendee(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    // Getters and Setters
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    // Override toString() to display Attendee details
+    @Override
+    public String toString() {
+        return "ID: " + id + ", Name: " + name;
+    }
+
+    // Override equals() and hashCode() to ensure uniqueness in a Set
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Attendee attendee = (Attendee) obj;
+        return id == attendee.id; // Compare by ID to ensure uniqueness
+    }
+
+    @Override
+    public int hashCode() {
+        return Integer.hashCode(id); // Use ID for hash code to ensure uniqueness
+    }
+}
+___________________________________________________________________________________________________________________________________________
+
+Event.java
+
+package Test;
+
+import java.util.HashSet;
+import java.util.Set;
+
+public class Event {
+    private Set<Attendee> attendees;  // A set to hold attendees
+
+    // Constructor
+    public Event() {
+        this.attendees = new HashSet<>();  // Initialize the set of attendees
+    }
+
+    // Add an attendee
+    public void addAttendee(Attendee attendee) {
+        if (attendees.add(attendee)) {
+            System.out.println("Attendee " + attendee.getName() + " added successfully.");
+        } else {
+            System.out.println("Attendee with ID " + attendee.getId() + " already exists.");
+        }
+    }
+
+    // Remove an attendee by ID
+    public void removeAttendee(int id) {
+        boolean removed = attendees.removeIf(attendee -> attendee.getId() == id);
+        if (removed) {
+            System.out.println("Attendee with ID " + id + " removed successfully.");
+        } else {
+            System.out.println("Attendee with ID " + id + " not found.");
+        }
+    }
+
+    // Display all attendees
+    public void displayAttendees() {
+        if (attendees.isEmpty()) {
+            System.out.println("No attendees.");
+        } else {
+            for (Attendee attendee : attendees) {
+                System.out.println(attendee);
+            }
+        }
+    }
+
+    // Get total number of attendees
+    public int getTotalAttendees() {
+        return attendees.size();
+    }
+}
+
+
+_______________________________________________________________________________________________________________________________________________________
+
+EventPlan.java
+
+package Test;
+
+public class EventPlan {
+    public static void main(String[] args) {
+        // Create an event
+        Event event = new Event();
+
+        // Create some attendees
+        Attendee attendee1 = new Attendee(1, "John Doe");
+        Attendee attendee2 = new Attendee(2, "Jane Smith");
+        Attendee attendee3 = new Attendee(3, "Alice Johnson");
+
+        // Add attendees
+        event.addAttendee(attendee1);
+        event.addAttendee(attendee2);
+        event.addAttendee(attendee3);
+
+        // Display all attendees
+        event.displayAttendees();
+
+        // Total number of attendees
+        System.out.println("\nTotal number of attendees: " + event.getTotalAttendees());
+
+        // Remove an attendee by ID
+        event.removeAttendee(2);
+
+        // Display attendees again after removal
+        event.displayAttendees();
+
+        // Try to remove an attendee that doesn't exist
+        event.removeAttendee(5);
+
+        // Total number of attendees after removal
+        System.out.println("\nTotal number of attendees: " + event.getTotalAttendees());
+    }
+}
+
+
+__________________________________________________________________________________________________________________________________________________________
+
+
+
+
+
+
+
+
+
+
+
+
